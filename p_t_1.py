@@ -75,28 +75,20 @@ class R_W_P():
         self.t1.configure(font=(self.font_text,self.size,self.style))
         self.l1.configure(text=f"Font {self.font_text}, Size {self.size}, Style {self.style}, Color {self.color_text}, File {self.name_file}")
     def c_c(self,c,e):
-        try:
-            if e:self.paste=self.screen.clipboard_get()
-            if c=="cup":
-                self.paste=self.t1.selection_get()
-                self.t1.delete("sel.first","sel.last")
-                self.screen.clipboard_clear()
-                self.screen.clipboard_append(self.paste)
-            if c=="copy":
-                self.paste=self.t1.selection_get()
-                self.screen.clipboard_clear()
-                self.screen.clipboard_append(self.paste)
-        except:
-            if e:self.paste=self.screen.clipboard_get()
-            if c=="cup":
-                self.paste=self.t1.get("1.0",END)
-                self.t1.delete("1.0",END)
-                self.screen.clipboard_clear()
-                self.screen.clipboard_append(self.paste)
-            if c=="copy":
-                self.paste=self.t1.get("1.0",END)
-                self.screen.clipboard_clear()
-                self.screen.clipboard_append(self.paste)
+        try:self.copy_or_cut(c,e,"sel.first","sel.last")
+        except:self.copy_or_cut(c,e,"1.0",END,True)
+    def copy_or_cut(self,c,e,init=None,end=None,error=False):
+        if e:self.paste=self.screen.clipboard_get()
+        def repeat(c,init=None,end=None,error=False):
+            if error:
+                if c=="cup":self.paste=self.t1.get(init,end)
+                self.t1.delete(init,end)
+            if not error:self.paste=self.t1.selection_get()
+            if c=="cup" and not error:self.t1.delete(init,end)
+            self.screen.clipboard_clear()
+            self.screen.clipboard_append(self.paste)
+        if c=="cup":repeat(c,init,end,error)
+        if c=="copy":repeat(c)
     def paste_text(self,e):
         if e:self.paste=self.screen.clipboard_get()
         else:
@@ -179,7 +171,7 @@ class R_W_P():
         showinfo("About", 
                 """This is a simple text editor.
                 \nDeveloped by: Esteban Matias Cancino
-                \nVersion: 1.0
+                \nVersion: 1.5
                 \nstatus: in progress""")
     def help_fun(self):
         showinfo("Help", """
