@@ -1,7 +1,5 @@
 from tkinter import*
-from tkinter import font
-from tkinter import Scrollbar
-from tkinter import filedialog, colorchooser
+from tkinter import font,Scrollbar,filedialog, colorchooser
 from tkinter.messagebox import showinfo
 
 class R_W_P():
@@ -151,14 +149,10 @@ class R_W_P():
             f.write("\n\n")
             f.write(text)
     def get_parameters_save(self):
-        f=self.font_text
-        s=self.size
-        st=self.style
-        c=self.color_text
-        p_f={"font":f,
-            "size":s,
-            "style":st,
-            "color":c}
+        p_f={"font":self.font_text,
+            "size":self.size,
+            "style":self.style,
+            "color":self.color_text}
         return p_f
     def get_parameters_open(self, content):
         metadatos, content_text = content.split("\n\n", 1)
@@ -170,23 +164,17 @@ class R_W_P():
                 parameters[key.strip()] = value.strip()
         return parameters, content_text
     def mode(self):
-        if self.mode_state=="Dark":
-            if self.color_text=="black":self.color_text="white"
-            else:self.color_text=self.color_text
-            self.screen.configure(bg="black")
-            self.t1.configure(bg="black",foreground=self.color_text,selectbackground="white",selectforeground="black")
-            self.l1.configure(bg="black",foreground="white")
-            self.l1.configure(text=f"Font {self.font_text}, Size {self.size}, Style {self.style}, Color {self.color_text}, File {self.name_file}")
-            self.mode_state="Light"
-        else:
-            self.screen.configure(bg="white")
-            if self.color_text=="white":self.color_text="black"
-            else:self.color_text=self.color_text
-            self.t1.configure(bg="white",foreground=self.color_text,selectbackground="black",selectforeground="white")
-            self.l1.configure(bg="white",foreground="black")
-            self.l1.configure(text=f"Font {self.font_text}, Size {self.size}, Style {self.style}, Color {self.color_text}, File {self.name_file}")
-            self.mode_state="Dark"
+        if self.mode_state=="Dark":self.mode_dark_white("black","white","Light")
+        else:self.mode_dark_white("white","black","Dark")
         self.menu_mode.entryconfigure(0, label=f"{self.mode_state}")
+    def mode_dark_white(self,color:str,color2:str,mode:str):
+        if self.color_text==color:self.color_text=color2
+        else:self.color_text=self.color_text
+        self.screen.configure(bg=color)
+        self.t1.configure(bg=color,foreground=self.color_text,selectbackground=color2,selectforeground=color)
+        self.l1.configure(bg=color,foreground=color2)
+        self.l1.configure(text=f"Font {self.font_text}, Size {self.size}, Style {self.style}, Color {self.color_text}, File {self.name_file}")
+        self.mode_state=mode
     def about(self):
         showinfo("About", 
                 """This is a simple text editor.
