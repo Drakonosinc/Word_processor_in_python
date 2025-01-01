@@ -41,12 +41,10 @@ class R_W_P():
         self.menu_edit.add_command(label="Redo  (ctrl+y)",command=lambda:self.t1.edit_redo())
         self.menu_fonts=Menu(self.my_menu,tearoff=False)
         self.my_menu.add_cascade(label="Fonts",menu=self.menu_fonts)
-        self.list_fonts=list(font.families())
-        for font_name in self.list_fonts:self.menu_fonts.add_command(label=font_name, command=lambda f=font_name: self.fonts(f, self.size, self.style))
+        for font_name in list(font.families()):self.menu_fonts.add_command(label=font_name, command=lambda f=font_name: self.fonts(f, self.size, self.style))
         self.menu_style=Menu(self.my_menu,tearoff=False)
         self.my_menu.add_cascade(label="Style",menu=self.menu_style)
-        self.list_style=["normal","bold","underline","italic"]
-        for style in self.list_style:self.menu_style.add_command(label=style,command=lambda s=style:self.fonts(self.font_text,self.size,s))
+        for style in ["normal","bold","underline","italic"]:self.menu_style.add_command(label=style,command=lambda s=style:self.fonts(self.font_text,self.size,s))
         self.my_menu.add_command(label="Colors",command=lambda:self.color())
         self.menu_size=Menu(self.my_menu,tearoff=False)
         self.my_menu.add_cascade(label="Size",menu=self.menu_size)
@@ -109,9 +107,7 @@ class R_W_P():
         self.name_file="Open"
         with open(self.file_open,"r") as f:self.file_read=f.read()
         formats,content_text=self.get_parameters_open(self.file_read)
-        self.fonts(formats['font'],
-                    formats['size'],
-                    formats['style'])
+        self.fonts(formats['font'],formats['size'],formats['style'])
         self.color_text=formats['color']
         self.t1.configure(foreground=self.color_text)
         self.l1.configure(text=f"Font {self.font_text}, Size {self.size}, Style {self.style}, Color {self.color_text}, File {self.name_file}")
