@@ -1,13 +1,11 @@
 from tkinter import*
 from tkinter import font,Scrollbar,filedialog, colorchooser
 from tkinter.messagebox import showinfo
-
 class R_W_P():
     def __init__(self):
         self.screen=Tk()
         self.screen.title("Rudimentary Word Processor")
-        self.width=800
-        self.height=500
+        self.width,self.height=800,500
         self.screen_width=self.screen.winfo_screenwidth()
         self.screen_height=self.screen.winfo_screenheight()
         self.screen.geometry("{}x{}+{}+{}".format(self.width, self.height, (self.screen_width-self.width)//2, (self.screen_height-self.height)//2))
@@ -163,6 +161,4 @@ class R_W_P():
                 /   (_____/
                 /_____/
                 """)
-if __name__=="__main__":
-    R_W_P()
-    mainloop()
+if __name__=="__main__":R_W_P(),mainloop()
