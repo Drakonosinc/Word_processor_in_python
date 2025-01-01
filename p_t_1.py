@@ -64,14 +64,12 @@ class R_W_P():
         self.l1.pack(side=BOTTOM)
     def color(self):
         self.color_text=colorchooser.askcolor()[1]
-        self.t1.configure(foreground=self.color_text)
-        self.l1.configure(text=f"Font {self.font_text}, Size {self.size}, Style {self.style}, Color {self.color_text}, File {self.name_file}")
+        self.config_text()
     def fonts(self,font,size,style):
         self.font_text=font
         self.size=size
         self.style=style
-        self.t1.configure(font=(self.font_text,self.size,self.style))
-        self.l1.configure(text=f"Font {self.font_text}, Size {self.size}, Style {self.style}, Color {self.color_text}, File {self.name_file}")
+        self.config_text()
     def c_c_p(self,c,e):
         try:self.copy_or_cut_paste(c,e,"sel.first","sel.last")
         except:self.copy_or_cut_paste(c,e,"1.0",END,True)
@@ -98,8 +96,7 @@ class R_W_P():
         self.style="normal"
         self.paste=""
         self.name_file="New"
-        self.t1.configure(font=(self.font_text,self.size,self.style),foreground=self.color_text)
-        self.l1.configure(text=f"Font {self.font_text}, Size {self.size}, Style {self.style}, Color {self.color_text}, File {self.name_file}")
+        self.config_text()
     def open_file(self):
         self.new_file()
         self.file_open=filedialog.askopenfilename(title="Open File",filetypes=(("Text Files","*.txt"),("All Files","*.*")))
@@ -109,8 +106,7 @@ class R_W_P():
         formats,content_text=self.get_parameters_open(self.file_read)
         self.fonts(formats['font'],formats['size'],formats['style'])
         self.color_text=formats['color']
-        self.t1.configure(foreground=self.color_text)
-        self.l1.configure(text=f"Font {self.font_text}, Size {self.size}, Style {self.style}, Color {self.color_text}, File {self.name_file}")
+        self.config_text()
         self.t1.insert("1.0",content_text)
     def save_file(self):
         try:
@@ -154,10 +150,12 @@ class R_W_P():
         if self.color_text==color:self.color_text=color2
         else:self.color_text=self.color_text
         self.screen.configure(bg=color)
-        self.t1.configure(bg=color,foreground=self.color_text,selectbackground=color2,selectforeground=color)
         self.l1.configure(bg=color,foreground=color2)
-        self.l1.configure(text=f"Font {self.font_text}, Size {self.size}, Style {self.style}, Color {self.color_text}, File {self.name_file}")
+        self.config_text(color,color2)
         self.mode_state=mode
+    def config_text(self,color=None,color2=None):
+        self.t1.configure(bg=color,font=(self.font_text,self.size,self.style),foreground=self.color_text,selectbackground=color2,selectforeground=color)
+        self.l1.configure(text=f"Font {self.font_text}, Size {self.size}, Style {self.style}, Color {self.color_text}, File {self.name_file}")
     def about(self):
         showinfo("About", 
                 """This is a simple text editor.
