@@ -90,9 +90,7 @@ class R_W_P():
         self.style="normal"
         self.paste=""
         self.name_file="New"
-        if new:
-            self.t1.delete("1.0",END)
-            self.config_text()
+        if new:self.t1.delete("1.0",END),self.config_text()
     def open_file(self):
         self.default_values(True)
         self.file_open=filedialog.askopenfilename(title="Open File",filetypes=(("Text Files","*.txt"),("All Files","*.*")))
