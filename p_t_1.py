@@ -12,20 +12,15 @@ class R_W_P():
         self.screen_height=self.screen.winfo_screenheight()
         self.screen.geometry("{}x{}+{}+{}".format(self.width, self.height, (self.screen_width-self.width)//2, (self.screen_height-self.height)//2))
         self.screen.configure(bg="white")
-        self.color_text="black"
-        self.font_text="arial"
-        self.size="10"
-        self.style="normal"
+        self.default_values()
         self.screen.bind("<Control-x>",lambda e:self.c_c_p("cut",e))
         self.screen.bind("<Control-c>", lambda e:self.c_c_p("copy", e))
         self.screen.bind("<Control-v>",lambda e:self.c_c_p("paste",e))
-        self.paste=""
-        self.name_file="New"
         self.my_menu=Menu(self.screen)
         self.screen.config(menu=self.my_menu)
         self.menu_option=Menu(self.my_menu,tearoff=False)
         self.my_menu.add_cascade(label="Options",menu=self.menu_option)
-        self.menu_option.add_command(label="New",command=self.new_file)
+        self.menu_option.add_command(label="New",command=lambda:self.default_values(True))
         self.menu_option.add_command(label="Open",command=self.open_file)
         self.menu_option.add_command(label="Save",command=self.save_file)
         self.menu_option.add_command(label="Save as",command=self.save_file_as)
@@ -88,17 +83,18 @@ class R_W_P():
         if c=="paste":
             self.position=self.t1.index(INSERT)
             self.t1.insert(self.position,self.paste)
-    def new_file(self):
-        self.t1.delete("1.0",END)
+    def default_values(self,new=False):
         self.color_text="black"
         self.font_text="arial"
         self.size="10"
         self.style="normal"
         self.paste=""
         self.name_file="New"
-        self.config_text()
+        if new:
+            self.t1.delete("1.0",END)
+            self.config_text()
     def open_file(self):
-        self.new_file()
+        self.default_values(True)
         self.file_open=filedialog.askopenfilename(title="Open File",filetypes=(("Text Files","*.txt"),("All Files","*.*")))
         if self.file_open is None:return
         self.name_file="Open"
