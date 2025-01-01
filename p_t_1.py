@@ -16,9 +16,9 @@ class R_W_P():
         self.font_text="arial"
         self.size="10"
         self.style="normal"
-        self.screen.bind("<Control-x>",lambda e:self.c_c("cut",e))
-        self.screen.bind("<Control-c>", lambda e:self.c_c("copy", e))
-        self.screen.bind("<Control-v>",lambda e:self.paste_text(e))
+        self.screen.bind("<Control-x>",lambda e:self.c_c_p("cut",e))
+        self.screen.bind("<Control-c>", lambda e:self.c_c_p("copy", e))
+        self.screen.bind("<Control-v>",lambda e:self.c_c_p("paste",e))
         self.paste=""
         self.name_file="New"
         self.my_menu=Menu(self.screen)
@@ -33,9 +33,9 @@ class R_W_P():
         self.menu_option.add_command(label="Exit",command=self.screen.quit)
         self.menu_edit=Menu(self.my_menu,tearoff=False)
         self.my_menu.add_cascade(label="Edit",menu=self.menu_edit)
-        self.menu_edit.add_command(label="Cup  (ctrl+x)",command=lambda:self.c_c("cup",False))
-        self.menu_edit.add_command(label="Copy  (ctrl+c)",command=lambda:self.c_c("copy",False))
-        self.menu_edit.add_command(label="Paste  (ctrl+v)",command=lambda:self.paste_text(False))
+        self.menu_edit.add_command(label="Cup  (ctrl+x)",command=lambda:self.c_c_p("cup",False))
+        self.menu_edit.add_command(label="Copy  (ctrl+c)",command=lambda:self.c_c_p("copy",False))
+        self.menu_edit.add_command(label="Paste  (ctrl+v)",command=lambda:self.c_c_p("paste",False))
         self.menu_edit.add_separator()
         self.menu_edit.add_command(label="Undo  (ctrl+z)",command=lambda:self.t1.edit_undo())
         self.menu_edit.add_command(label="Redo  (ctrl+y)",command=lambda:self.t1.edit_redo())
@@ -74,10 +74,10 @@ class R_W_P():
         self.style=style
         self.t1.configure(font=(self.font_text,self.size,self.style))
         self.l1.configure(text=f"Font {self.font_text}, Size {self.size}, Style {self.style}, Color {self.color_text}, File {self.name_file}")
-    def c_c(self,c,e):
-        try:self.copy_or_cut(c,e,"sel.first","sel.last")
-        except:self.copy_or_cut(c,e,"1.0",END,True)
-    def copy_or_cut(self,c,e,init=None,end=None,error=False):
+    def c_c_p(self,c,e):
+        try:self.copy_or_cut_paste(c,e,"sel.first","sel.last")
+        except:self.copy_or_cut_paste(c,e,"1.0",END,True)
+    def copy_or_cut_paste(self,c,e,init=None,end=None,error=False):
         if e:self.paste=self.screen.clipboard_get()
         def repeat(c,init=None,end=None,error=False):
             if error:
@@ -89,9 +89,7 @@ class R_W_P():
             self.screen.clipboard_append(self.paste)
         if c=="cup":repeat(c,init,end,error)
         if c=="copy":repeat(c)
-    def paste_text(self,e):
-        if e:self.paste=self.screen.clipboard_get()
-        else:
+        if c=="paste":
             self.position=self.t1.index(INSERT)
             self.t1.insert(self.position,self.paste)
     def new_file(self):
@@ -109,8 +107,7 @@ class R_W_P():
         self.file_open=filedialog.askopenfilename(title="Open File",filetypes=(("Text Files","*.txt"),("All Files","*.*")))
         if self.file_open is None:return
         self.name_file="Open"
-        with open(self.file_open,"r") as f:
-            self.file_read=f.read()
+        with open(self.file_open,"r") as f:self.file_read=f.read()
         formats,content_text=self.get_parameters_open(self.file_read)
         self.fonts(formats['font'],
                     formats['size'],
@@ -124,8 +121,7 @@ class R_W_P():
             self.name_file="Save"
             formats=self.get_parameters_save()
             with open(self.file_open,"w") as f:
-                for p, v in formats.items():
-                    f.write(f"{p}:{v}\n")
+                for p, v in formats.items():f.write(f"{p}:{v}\n")
                 f.write("\n\n")
                 f.write(self.t1.get("1.0",END))
         except:self.save_file_as()
@@ -136,8 +132,7 @@ class R_W_P():
         self.name_file="Save as"
         formats=self.get_parameters_save()
         with open(self.file_save.name,"w") as f:
-            for p, v in formats.items():
-                f.write(f"{p}:{v}\n")
+            for p, v in formats.items():f.write(f"{p}:{v}\n")
             f.write("\n\n")
             f.write(text)
     def get_parameters_save(self):
@@ -179,7 +174,7 @@ class R_W_P():
                 (    @\___
                 /         O
                 /   (_____/
-                /_____/   U
+                /_____/
                 """)
 if __name__=="__main__":
     R_W_P()
