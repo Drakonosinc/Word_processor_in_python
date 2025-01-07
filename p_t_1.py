@@ -135,8 +135,7 @@ class R_W_P():
                 parameters[key.strip()] = value.strip()
         return parameters, content_text
     def mode(self):
-        if self.mode_state=="Dark":self.mode_dark_white("black","white","Light")
-        else:self.mode_dark_white("white","black","Dark")
+        self.mode_dark_white(*("black","white","Light") if self.mode_state=="Dark" else ("white","black","Dark"))
         self.menu_mode.entryconfigure(0, label=f"{self.mode_state}")
     def mode_dark_white(self,color:str,color2:str,mode:str):
         if self.color_text==color:self.color_text=color2
