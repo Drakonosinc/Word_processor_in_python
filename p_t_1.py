@@ -104,21 +104,18 @@ class R_W_P():
         try:
             self.name_file="Save"
             formats=self.get_parameters_save()
-            with open(self.file_open,"w") as f:
-                for p, v in formats.items():f.write(f"{p}:{v}\n")
-                f.write("\n\n")
-                f.write(self.t1.get("1.0",END))
+            with open(self.file_open,"w") as f:self.repeat_in_saves(f,formats)
         except:self.save_file_as()
     def save_file_as(self):
         self.file_save=filedialog.asksaveasfile(defaultextension=".*",filetypes=(("Text Files","*.txt"),("All Files","*.*")))
-        text=self.t1.get("1.0",END)
         if self.file_save is None:return
         self.name_file="Save as"
         formats=self.get_parameters_save()
-        with open(self.file_save.name,"w") as f:
-            for p, v in formats.items():f.write(f"{p}:{v}\n")
-            f.write("\n\n")
-            f.write(text)
+        with open(self.file_save.name,"w") as f:self.repeat_in_saves(f,formats)
+    def repeat_in_saves(self,f,formats):
+        for p, v in formats.items():f.write(f"{p}:{v}\n")
+        f.write("\n\n")
+        f.write(self.t1.get("1.0",END))
     def get_parameters_save(self):
         p_f={"font":self.font_text,
             "size":self.size,
