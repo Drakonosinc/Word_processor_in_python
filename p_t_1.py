@@ -137,8 +137,10 @@ class R_W_P():
         self.config_text(color,color2)
         self.mode_state=mode
     def config_text(self,color=None,color2=None):
-        self.t1.configure(bg=color,font=(self.font_text,self.size,self.style),foreground=self.color_text,selectbackground=color2,selectforeground=color)
-        self.l1.configure(text=f"Font {self.font_text}, Size {self.size}, Style {self.style}, Color {self.color_text}, File {self.name_file}",bg=color,foreground=color2)
+        try:
+            self.t1.configure(bg=color,font=(self.font_text,self.size,self.style),foreground=self.color_text,selectbackground=color2,selectforeground=color)
+            self.l1.configure(text=f"Font {self.font_text}, Size {self.size}, Style {self.style}, Color {self.color_text}, File {self.name_file}",bg=color,foreground=color2)
+        except:self.default_values(),self.config_text()
     def about(self):
         showinfo("About", 
                 """This is a simple text editor.
