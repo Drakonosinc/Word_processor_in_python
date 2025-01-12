@@ -58,10 +58,11 @@ class R_W_P():
     def color(self):
         self.color_text=colorchooser.askcolor()[1]
         self.config_text()
-    def fonts(self,font,size,style):
+    def fonts(self,font,size,style,color_change=False,color=(0,0,0)):
         self.font_text=font
         self.size=size
         self.style=style
+        if color_change:self.color_text=color
         self.config_text()
     def c_c_p(self,c,e):
         try:self.copy_or_cut_paste(c,e,"sel.first","sel.last")
@@ -96,9 +97,7 @@ class R_W_P():
         self.name_file="Open"
         with open(self.file_open,"r") as f:self.file_read=f.read()
         formats,content_text=self.get_parameters_open(self.file_read)
-        self.fonts(formats['font'],formats['size'],formats['style'])
-        self.color_text=formats['color']
-        self.config_text()
+        self.fonts(formats['font'],formats['size'],formats['style'],True,formats['color'])
         self.t1.insert("1.0",content_text)
     def save_file(self):
         try:self.repeat_in_saves("Save")
