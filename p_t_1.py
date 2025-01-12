@@ -101,21 +101,20 @@ class R_W_P():
         self.config_text()
         self.t1.insert("1.0",content_text)
     def save_file(self):
-        try:
-            self.name_file="Save"
-            formats=self.get_parameters_save()
-            with open(self.file_open,"w") as f:self.repeat_in_saves(f,formats)
+        try:self.repeat_in_saves("Save")
         except:self.save_file_as()
     def save_file_as(self):
         self.file_save=filedialog.asksaveasfile(defaultextension=".*",filetypes=(("Text Files","*.txt"),("All Files","*.*")))
         if self.file_save is None:return
-        self.name_file="Save as"
+        self.repeat_in_saves("Save as")
+    def repeat_in_saves(self,name_file):
+        self.name_file=name_file
         formats=self.get_parameters_save()
-        with open(self.file_save.name,"w") as f:self.repeat_in_saves(f,formats)
-    def repeat_in_saves(self,f,formats):
-        for p, v in formats.items():f.write(f"{p}:{v}\n")
-        f.write("\n\n")
-        f.write(self.t1.get("1.0",END))
+        def repeat(f):
+            for p, v in formats.items():f.write(f"{p}:{v}\n")
+            f.write("\n\n")
+            f.write(self.t1.get("1.0",END))
+        with open(self.file_save.name if self.name_file=="Save as" else self.file_open,"w") as f:repeat(f) 
     def get_parameters_save(self):
         p_f={"font":self.font_text,
             "size":self.size,
@@ -146,7 +145,7 @@ class R_W_P():
         showinfo("About", 
                 """This is a simple text editor.
                 \nDeveloped by: Esteban Matias Cancino
-                \nVersion: 1.5
+                \nVersion: 2.0
                 \nstatus: in progress""")
     def help_fun(self):
         showinfo("Help", """
