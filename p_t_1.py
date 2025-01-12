@@ -82,16 +82,15 @@ class R_W_P():
         if c=="paste":
             self.position=self.t1.index(INSERT)
             self.t1.insert(self.position,self.paste)
-    def default_values(self,new=False):
+    def default_values(self,name_file="New",new=False):
         self.fonts("arial","10","normal",True,"black",False)
         self.paste=""
-        self.name_file="New"
+        self.name_file=name_file
         if new:self.t1.delete("1.0",END),self.config_text()
     def open_file(self):
-        self.default_values(True)
+        self.default_values("Open",True)
         self.file_open=filedialog.askopenfilename(title="Open File",filetypes=(("Text Files","*.txt"),("All Files","*.*")))
         if self.file_open is None:return
-        self.name_file="Open"
         with open(self.file_open,"r") as f:self.file_read=f.read()
         formats,content_text=self.get_parameters_open(self.file_read)
         self.fonts(formats['font'],formats['size'],formats['style'],True,formats['color'])
