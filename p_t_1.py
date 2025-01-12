@@ -133,7 +133,7 @@ class R_W_P():
         self.mode_dark_white(*("black","white","Light") if self.mode_state=="Dark" else ("white","black","Dark"))
         self.menu_mode.entryconfigure(0, label=f"{self.mode_state}")
     def mode_dark_white(self,color:str,color2:str,mode:str):
-        if self.color_text==color:self.color_text=color2
+        self.color_text=color2 if self.color_text==color else self.color_text
         self.screen.configure(bg=color)
         self.config_text(color,color2)
         self.mode_state=mode
