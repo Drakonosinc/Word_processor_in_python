@@ -58,12 +58,12 @@ class R_W_P():
     def color(self):
         self.color_text=colorchooser.askcolor()[1]
         self.config_text()
-    def fonts(self,font,size,style,color_change=False,color=(0,0,0)):
+    def fonts(self,font,size,style,color_change=False,color=(0,0,0),change_text=True):
         self.font_text=font
         self.size=size
         self.style=style
         if color_change:self.color_text=color
-        self.config_text()
+        if change_text:self.config_text()
     def c_c_p(self,c,e):
         try:self.copy_or_cut_paste(c,e,"sel.first","sel.last")
         except:self.copy_or_cut_paste(c,e,"1.0",END,True)
@@ -83,10 +83,7 @@ class R_W_P():
             self.position=self.t1.index(INSERT)
             self.t1.insert(self.position,self.paste)
     def default_values(self,new=False):
-        self.color_text="black"
-        self.font_text="arial"
-        self.size="10"
-        self.style="normal"
+        self.fonts("arial","10","normal",True,"black",False)
         self.paste=""
         self.name_file="New"
         if new:self.t1.delete("1.0",END),self.config_text()
