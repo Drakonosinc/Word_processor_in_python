@@ -110,11 +110,10 @@ class R_W_P():
     def repeat_in_saves(self,name_file):
         self.name_file=name_file
         formats=self.get_parameters_save()
-        def repeat(f):
+        with open(self.file_save.name if self.name_file=="Save as" else self.file_open,"w") as f:
             for p, v in formats.items():f.write(f"{p}:{v}\n")
             f.write("\n\n")
             f.write(self.t1.get("1.0",END))
-        with open(self.file_save.name if self.name_file=="Save as" else self.file_open,"w") as f:repeat(f) 
     def get_parameters_save(self):
         p_f={"font":self.font_text,
             "size":self.size,
