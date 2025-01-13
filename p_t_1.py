@@ -18,7 +18,7 @@ class R_W_P():
         self.screen.config(menu=self.my_menu)
         self.menu_option=Menu(self.my_menu,tearoff=False)
         self.my_menu.add_cascade(label="Options",menu=self.menu_option)
-        self.create_menus(self.menu_option,New=lambda:self.default_values(True),Open=self.open_file,Save=self.save_file,Save_as=self.save_file_as,separator=None,Exit=self.screen.quit)
+        self.create_menus(self.menu_option,New=lambda:self.default_values(True),Open=self.open_file,Save=self.save_file,**{"Save as":self.save_file_as},separator=None,Exit=self.screen.quit)
         self.menu_edit=Menu(self.my_menu,tearoff=False)
         self.my_menu.add_cascade(label="Edit",menu=self.menu_edit)
         self.create_menus(self.menu_edit,**{"Cut  (Ctrl+x)":lambda:self.c_c_p("cut",False),"Copy  (Ctrl+c)":lambda:self.c_c_p("copy",False),"Paste  (Ctrl+v)":lambda:self.c_c_p("paste",False),"separator":None,"Undo  (Ctrl+z)":lambda:self.t1.edit_undo(),"Redo  (Ctrl+y)":lambda:self.t1.edit_redo()})
@@ -46,8 +46,7 @@ class R_W_P():
         self.l1=Label(self.screen,text=f"Font {self.font_text}, Size {self.size}, Style {self.style}, Color {self.color_text}, File {self.name_file}",bg="white",anchor=N)
         self.l1.pack(side=BOTTOM)
     def create_menus(self,menu,**kwargs):
-        for key, value in kwargs.items():
-            menu.add_command(label=key,command=value) if key!="separator" else menu.add_separator()
+        for key, value in kwargs.items():menu.add_command(label=key,command=value) if key!="separator" else menu.add_separator()
     def color(self):
         self.color_text=colorchooser.askcolor()[1]
         self.config_text()
