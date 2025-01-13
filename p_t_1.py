@@ -102,10 +102,7 @@ class R_W_P():
             f.write("\n\n")
             f.write(self.t1.get("1.0",END))
     def get_parameters_save(self):
-        p_f={"font":self.font_text,
-            "size":self.size,
-            "style":self.style,
-            "color":self.color_text}
+        p_f={"font":self.font_text,"size":self.size,"style":self.style,"color":self.color_text}
         return p_f
     def get_parameters_open(self, content):
         metadatos, content_text = content.split("\n\n", 1)
