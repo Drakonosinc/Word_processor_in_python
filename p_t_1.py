@@ -55,6 +55,8 @@ class R_W_P():
         self.y_scroll.config(command=self.t1.yview)
         self.l1=Label(self.screen,text=f"Font {self.font_text}, Size {self.size}, Style {self.style}, Color {self.color_text}, File {self.name_file}",bg="white",anchor=N)
         self.l1.pack(side=BOTTOM)
+    def create_menus(self):
+        pass
     def color(self):
         self.color_text=colorchooser.askcolor()[1]
         self.config_text()
