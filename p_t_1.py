@@ -18,12 +18,7 @@ class R_W_P():
         self.screen.config(menu=self.my_menu)
         self.menu_option=Menu(self.my_menu,tearoff=False)
         self.my_menu.add_cascade(label="Options",menu=self.menu_option)
-        self.menu_option.add_command(label="New",command=lambda:self.default_values(True))
-        self.menu_option.add_command(label="Open",command=self.open_file)
-        self.menu_option.add_command(label="Save",command=self.save_file)
-        self.menu_option.add_command(label="Save as",command=self.save_file_as)
-        self.menu_option.add_separator()
-        self.menu_option.add_command(label="Exit",command=self.screen.quit)
+        self.create_menus(self.menu_option,New=lambda:self.default_values(True),Open=self.open_file,Save=self.save_file,Save_as=self.save_file_as,separator=None,Exit=self.screen.quit)
         self.menu_edit=Menu(self.my_menu,tearoff=False)
         self.my_menu.add_cascade(label="Edit",menu=self.menu_edit)
         self.menu_edit.add_command(label="Cup  (ctrl+x)",command=lambda:self.c_c_p("cup",False))
@@ -55,8 +50,9 @@ class R_W_P():
         self.y_scroll.config(command=self.t1.yview)
         self.l1=Label(self.screen,text=f"Font {self.font_text}, Size {self.size}, Style {self.style}, Color {self.color_text}, File {self.name_file}",bg="white",anchor=N)
         self.l1.pack(side=BOTTOM)
-    def create_menus(self):
-        pass
+    def create_menus(self,menu,**kwargs):
+        for key, value in kwargs.items():
+            menu.add_command(label=key,command=value) if key!="separator" else menu.add_separator()
     def color(self):
         self.color_text=colorchooser.askcolor()[1]
         self.config_text()
